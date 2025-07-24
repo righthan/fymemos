@@ -45,14 +45,18 @@ class _LoginPageState extends State<LoginPage> with Refena {
       );
       return;
     }
-    if (baseUrl.startsWith("http://")) {
+    // if (baseUrl.startsWith("http://")) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(content: Text('Http is not safe, please use a https host')),
+    //   );
+    //   return;
+    // }
+
+    if (!baseUrl.startsWith("https://") && !baseUrl.startsWith("http://")) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Http is not safe, please use a https host')),
+        SnackBar(content: Text('Server url must be https or http')),
       );
       return;
-    }
-    if (!baseUrl.startsWith("https://")) {
-      baseUrl = "https://$baseUrl";
     }
 
     final prefs = SharedPreferencesService.instance;
@@ -88,14 +92,17 @@ class _LoginPageState extends State<LoginPage> with Refena {
       );
       return;
     }
-    if (baseUrl.startsWith("http://")) {
+    // if (baseUrl.startsWith("http://")) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(content: Text('Http is not safe, please use a https host')),
+    //   );
+    //   return;
+    // }
+    if (!baseUrl.startsWith("https://") && !baseUrl.startsWith("http://")) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Http is not safe, please use a https host')),
+        SnackBar(content: Text('Server url must be https or http')),
       );
       return;
-    }
-    if (!baseUrl.startsWith("https://")) {
-      baseUrl = "https://$baseUrl";
     }
 
     Result<UserProfile> result = await ApiClient.instance.signIn(
