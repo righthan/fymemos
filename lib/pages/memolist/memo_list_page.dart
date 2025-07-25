@@ -5,6 +5,7 @@ import 'package:fymemos/pages/memolist/memo_list_vm.dart';
 import 'package:fymemos/widgets/memo.dart';
 import 'package:go_router/go_router.dart';
 import 'package:refena_flutter/refena_flutter.dart';
+import 'package:fymemos/pages/random_memo/random_memo_page.dart';
 
 class MemoListPage extends StatefulWidget {
   final String? memoState;
@@ -51,12 +52,31 @@ class _MemoListPageState extends State<MemoListPage> with Refena {
         },
         child: _buildList(vm),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _createMemo,
-        tooltip: 'Create Memo',
-        child: const Icon(Icons.add),
-        backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
-        foregroundColor: Theme.of(context).colorScheme.onTertiaryContainer,
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton(
+            heroTag: 'randomMemo',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => RandomMemoPage()),
+              );
+            },
+            tooltip: '随机笔记',
+            child: const Icon(Icons.shuffle),
+            backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+            foregroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
+          ),
+          SizedBox(height: 12),
+          FloatingActionButton(
+            heroTag: 'createMemo',
+            onPressed: _createMemo,
+            tooltip: 'Create Memo',
+            child: const Icon(Icons.add),
+            backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+            foregroundColor: Theme.of(context).colorScheme.onTertiaryContainer,
+          ),
+        ],
       ),
     );
   }

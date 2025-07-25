@@ -10,7 +10,7 @@ import 'package:fymemos/utils/load_state.dart';
 import 'package:fymemos/utils/result.dart';
 
 class ApiClient {
-  int PAGE_SIZE = 20;
+  int PAGE_SIZE = 5;
 
   static final instance = ApiClient();
 
