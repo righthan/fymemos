@@ -28,7 +28,7 @@ class _TagMemoListPageState extends State<TagMemoListPage> with Refena {
   @override
   void initState() {
     super.initState();
-    filter = "tag in [\"${widget.memoTag}\"]";
+    filter = "content.contains(\"#${widget.memoTag}\")";
     loadData();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
