@@ -1,3 +1,5 @@
+import 'package:fymemos/data/services/api/api_client.dart';
+
 class MemoResource {
   final String name;
   final DateTime createTime;
@@ -7,11 +9,11 @@ class MemoResource {
   final String? memo;
 
   String get imageUrl {
-    return "https://memos.isming.info/file/$name/$filename";
+    return "${ApiClient.instance.baseUrl}/file/$name/$filename";
   }
 
   String get thumbnailUrl {
-    return "https://memos.isming.info/file/$name/$filename?thumbnail=true";
+    return "${ApiClient.instance.baseUrl}/file/$name/$filename?thumbnail=true";
   }
 
   MemoResource({
