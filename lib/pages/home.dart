@@ -52,6 +52,7 @@ class NavigationDrawerHomePage extends StatefulWidget {
 class _NavigationDrawerHomePageState extends State<NavigationDrawerHomePage>
     with Refena {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final TextEditingController searchController = TextEditingController();
 
   int screenIndex = 0;
   late bool showNavigationRail;
@@ -71,6 +72,12 @@ class _NavigationDrawerHomePageState extends State<NavigationDrawerHomePage>
       }
     });
     initPlatformState();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   Future<void> initPlatformState() async {
@@ -115,6 +122,7 @@ class _NavigationDrawerHomePageState extends State<NavigationDrawerHomePage>
   void handleScreenChanged(int selectedScreen) {
     print("Selected screen: $selectedScreen");
     if (isSearching) {
+      searchController.clear();
       ref.redux(userMemoProvider).dispatch(RefreshMemoAction());
     }
     setState(() {
@@ -139,6 +147,7 @@ class _NavigationDrawerHomePageState extends State<NavigationDrawerHomePage>
     return PopScope(
       canPop: !isSearching,
       onPopInvokedWithResult: (didPop, result) {
+        searchController.clear();
         setState(() {
           isSearching = false;
         });
@@ -229,6 +238,7 @@ class _NavigationDrawerHomePageState extends State<NavigationDrawerHomePage>
           isSearching
               ? IconButton(
                 onPressed: () {
+                  searchController.clear();
                   setState(() {
                     isSearching = false;
                   });
@@ -242,6 +252,7 @@ class _NavigationDrawerHomePageState extends State<NavigationDrawerHomePage>
         child:
             isSearching
                 ? TextField(
+                  controller: searchController,
                   autofocus: true,
                   textAlignVertical: TextAlignVertical.center,
                   decoration: InputDecoration(
@@ -256,6 +267,7 @@ class _NavigationDrawerHomePageState extends State<NavigationDrawerHomePage>
                     suffixIcon: IconButton(
                       icon: Icon(Icons.clear),
                       onPressed: () {
+                        searchController.clear();
                         setState(() {
                           isSearching = false;
                         });
@@ -265,10 +277,12 @@ class _NavigationDrawerHomePageState extends State<NavigationDrawerHomePage>
                       },
                     ),
                   ),
-                  onChanged: (value) {
-                    ref
-                        .redux(userMemoProvider)
-                        .dispatchAsync(SearchMemoAction(value));
+                  onSubmitted: (value) {
+                    if (value.trim().isNotEmpty) {
+                      ref
+                          .redux(userMemoProvider)
+                          .dispatchAsync(SearchMemoAction(value));
+                    }
                   },
                 )
                 : Text(context.intl[destinations[screenIndex].label]),
@@ -291,6 +305,7 @@ class _NavigationDrawerHomePageState extends State<NavigationDrawerHomePage>
     return PopScope(
       canPop: !isSearching,
       onPopInvokedWithResult: (didPop, result) {
+        searchController.clear();
         setState(() {
           isSearching = false;
         });

@@ -162,10 +162,9 @@ class SearchMemoAction
     final userResult =
         await SharedPreferencesService.instance.fetchUserDirect();
     final user = userResult;
-    final searchKey =
-        state.isSearchMode && state.searchKey != null
-            ? 'content.contains("${state.searchKey}")'
-            : null;
+    final searchKey = query.trim().isNotEmpty
+        ? 'content.contains("${query.trim()}")'
+        : null;
     final result = await ApiClient.instance.fetchUserMemosDirect(
       user: user,
       pageToken: null,
